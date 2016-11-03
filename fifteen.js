@@ -1,3 +1,5 @@
+//Attempted: Game time: Keep track of the game time elapsed in seconds and the total number of moves, and when the puzzle has been solved, display them along with the best time/moves seen so far.
+
 $(document).ready(function()
 {
 	var puzzle= $("#puzzlearea");
@@ -11,6 +13,9 @@ $(document).ready(function()
 	var temp2;
 	var emt=300;
 	var eml=300;
+	var start;
+	var end;
+	var moves=0;
 	console.log (pieces);
 	
 	for (var x=0;x<pieces.length; x++)//Arranges the puzzle
@@ -29,10 +34,10 @@ $(document).ready(function()
 	
 	//start();
 	
-	shuf.addEventListener("click", function()
+	shuf.addEventListener("click", function()//Shuffles the Puzzle
 	{
 		console.log("It works");
-		//start();
+		start= new Date();
 		for (var i=pieces.length-1;i>=0;i--)
 		{
 			pieces[i].setAttribute("class", "puzzlepiece");
@@ -45,7 +50,7 @@ $(document).ready(function()
 			pieces[rand].style.left=temp2;
 		}
 		
-		for(var j=0;j<pieces.length;j++)
+		for(var j=0;j<pieces.length;j++)//Attempts to move the movable pieces
 		{
 			if(pieces[j].style.top===emt+'px' || pieces[j].style.left===eml+'px')
 			{
@@ -57,6 +62,7 @@ $(document).ready(function()
 					console.log(pieces[j].style.top===parseInt(emt)-100+'px');
 					pieces[j].addEventListener("click", function()
 					{
+							moves++;//Counts the moves made
 							console.log("Before: emt=" +emt+ " eml=" +eml);
 							console.log("current top="+this.style.top+"current left=" +this.style.left);
 							console.log("And then:");
@@ -77,4 +83,25 @@ $(document).ready(function()
 		}
 	});
 	
+	for (var x=0;x<pieces.length; x++)//Checks for win
+	{
+		var win=0;
+		var t=0;
+		var l=0;
+		if(pieces[x].style.top===t&&pieces[x].style.left===l)
+		{
+			win=win+1;
+		}
+		l=l+100;
+		if(l===400)
+		{
+			l=0;
+			t+=100;
+		}
+	}
+	
+	if(win===15)//Displays moves and time taken
+	{
+		alert(moves+" Moves in" +new Date()-start);
+	}
 });
